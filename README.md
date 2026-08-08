@@ -1,207 +1,89 @@
-# 🌐 Simple Network Packet Sniffer (Scapy)
+# Simple Network Sniffer 🌐
 
-<div align="center">
+A simple Python script that reads a `.pcap` file and
+shows what's inside each network packet.
 
-A beginner-friendly Python script that captures and displays live network packets  
-using the powerful **Scapy** library.
-
-</div>
-
----
-
-## 📖 Overview
-
-This project is a minimal network packet sniffer built with Python and Scapy.
-
-It captures packets from a specified network interface and prints a summary of each packet to the console.
-
-This tool is intended for:
-
-- 🎓 Learning how packet sniffing works  
-- 🛡️ Cybersecurity beginners  
-- 🧪 Networking experiments in lab environments  
-- 🏁 CTF practice  
+> ⚠️ For learning only. Only analyze files you own or
+> have permission to inspect.
 
 ---
 
-## ⚠️ Disclaimer
+## What's Inside
 
-This tool is for **educational purposes only**.
-
-Packet sniffing without permission on networks you do not own or manage may be illegal.  
-Always use this tool in:
-
-- Your own lab
-- A virtual machine
-- An authorized testing environment
-
----
-
-## 🛠️ Requirements
-
-- Python 3.x
-- Scapy
-
----
-
-## 📦 Installation
-
-### 1️⃣ Install Scapy
-
-If using Jupyter Notebook:
-
-```python
-!pip install scapy
+```
+Simple_Network_Sniffer/
+│
+├── sniffer.py
+├── sample.pcapng
+├── README.md
+├── requirements.txt
+├── LICENSE
+└── .gitignore
 ```
 
-If using terminal:
+---
+
+## How It Works
+
+It reads each packet from a `.pcap` file and shows:
+- Source and destination IP
+- Protocol (TCP or UDP)
+- Port numbers
+- Any readable data in the payload
+
+```
+--- Packet #1 ---
+  From: 192.168.1.5  →  To: 142.250.183.78
+  Protocol: TCP
+  Port: 51512 → 443
+
+--- Packet #2 ---
+  From: 192.168.1.5  →  To: 224.0.0.251
+  Protocol: UDP
+  Port: 5353 → 5353
+```
+
+---
+
+## Setup
 
 ```bash
-pip install scapy
+pip install -r requirements.txt
 ```
 
----
-
-## 🚀 How It Works
-
-```python
-from scapy.all import *
-
-def packet_callback(packet):
-    print(packet.summary())
-
-sniff(prn=packet_callback, iface="eth0", count=10)
-```
-
-### 🔍 Explanation
-
-- `sniff()` → Captures network packets
-- `prn=packet_callback` → Calls a function for every captured packet
-- `iface="eth0"` → Specifies the network interface
-- `count=10` → Captures only 10 packets
-- `packet.summary()` → Prints a short summary of each packet
-
----
-
-## 🖥️ Running the Script
+## How to Run
 
 ```bash
 python sniffer.py
 ```
 
-You may need elevated privileges:
-
-```bash
-sudo python sniffer.py
-```
-
----
-
-## 📡 Example Output
-
-```
-Ether / IP / TCP 192.168.1.5:51512 > 142.250.183.78:https
-Ether / ARP who has 192.168.1.1 says 192.168.1.5
-Ether / IP / UDP 192.168.1.5:5353 > 224.0.0.251:mdns
-```
-
-Each line represents a captured packet summary.
-
----
-
-## 🔧 Customization
-
-### Capture More Packets
+To use your own `.pcap` file, change this line in `sniffer.py`:
 
 ```python
-sniff(prn=packet_callback, iface="eth0", count=50)
+analyze_file("your_file.pcap", count=10)
 ```
 
-### Capture Indefinitely
+---
+
+## What Each Part Does
 
 ```python
-sniff(prn=packet_callback, iface="eth0")
-```
-
-### Filter Specific Traffic (e.g., TCP Only)
-
-```python
-sniff(filter="tcp", prn=packet_callback, iface="eth0")
-```
-
-### Capture on Different Interface
-
-Find your interfaces:
-
-```bash
-ifconfig
-```
-
-or
-
-```bash
-ip a
-```
-
-Then replace `"eth0"` with your interface name (e.g., `"wlan0"`).
-
----
-
-## 🧠 Learning Concepts
-
-This project helps you understand:
-
-- Packet sniffing fundamentals
-- Network interfaces
-- TCP/IP basics
-- Real-time traffic monitoring
-- How Scapy works
-
----
-
-## 🛡️ Security Note
-
-Modern operating systems require:
-
-- Root/admin privileges for packet capture
-- Proper network permissions
-- Legal authorization
-
-Always follow ethical hacking guidelines.
-
----
-
-## 📂 Repository Structure
-
-```
-simple-network-sniffer/
-└── sniffer.py
+rdpcap("file.pcap")       # Read the pcap file
+packet[IP].src            # Get source IP
+packet[IP].dst            # Get destination IP
+packet[TCP].sport         # Get source port
+packet[Raw].load          # Get raw payload data
 ```
 
 ---
 
-## 🚀 Future Improvements
+## Requirements
 
-- Save captured packets to a `.pcap` file
-- Display packet details instead of summary
-- Add protocol-based filtering
-- Build a GUI using Tkinter
-- Detect suspicious traffic patterns
+- Python 3.6+
+- `scapy`
 
 ---
 
-## 👨‍💻 Author
+## License
 
-Syed Sameer  
-Aspiring Cybersecurity Enthusiast  
-
----
-
-<div align="center">
-
-Made with ❤️ by ChatGPT  
-Prompted by Syed Sameer  
-
-⭐ If you found this useful, consider starring the repository!
-
-</div>
+MIT — see [LICENSE](LICENSE)
